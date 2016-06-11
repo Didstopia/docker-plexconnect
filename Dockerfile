@@ -6,7 +6,8 @@ RUN apk add --update \
     python \
   && rm -rf /var/cache/apk/*
 
-COPY start-plexconnect.sh ip-self-external.patch /opt/
+ADD start-plexconnect.sh /opt
+ADD ip-self-external.patch /opt
 
 RUN cd /opt \
   && git clone https://github.com/iBaa/PlexConnect.git \
@@ -16,4 +17,4 @@ RUN cd /opt \
 # persistent storage for ssl certificates
 VOLUME /plexconnect
 
-CMD /opt/start-plexconnect.sh
+ENTRYPOINT /opt/start-plexconnect.sh
