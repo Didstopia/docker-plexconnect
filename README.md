@@ -1,3 +1,5 @@
+# *NOTE*: This is a fork of varju's PlexConnect image.
+
 Runs [PlexConnect](https://github.com/iBaa/PlexConnect) in a Docker container.
 
 Sample execution
