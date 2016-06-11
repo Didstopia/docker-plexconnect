@@ -1,20 +1,30 @@
-FROM alpine:latest
-MAINTAINER Alex Varju
+FROM alpine:3.3
 
-RUN apk add --update \
+MAINTAINER Pauli Jokela <pauli.jokela@didstopia.com>
+
+# Install updates
+RUN apk upgrade --update
+
+# Install dependencies
+RUN apk add \
 	git \
-	python && \
-	rm -rf /var/cache/apk/*
+	python \
+	py-imaging
 
-ADD start-plexconnect.sh /opt/
-ADD ip-self-external.patch /opt/
+# Copy necessary scripts
+COPY start-plexconnect.sh /opt/start.sh
 
-RUN cd /opt && \
-  git clone https://github.com/iBaa/PlexConnect.git && \
-  cd PlexConnect && \
-  git apply /opt/ip-self-external.patch
+# Download PlexConnect and apply the custom patch
+RUN git clone https://github.com/iBaa/PlexConnect.git /opt/PlexConnect
 
-# persistent storage for ssl certificates
+# Setup logging
+RUN ln -sf /dev/stdout /opt/PlexConnect/PlexConnect.log
+
+# Setup volume for SSL certificates
 VOLUME /plexconnect
 
-ENTRYPOINT /opt/start-plexconnect.sh
+# Run cleanup
+RUN rm -rf /var/cache/apk/*
+
+# Finally set the startup command
+ENTRYPOINT /opt/start.sh

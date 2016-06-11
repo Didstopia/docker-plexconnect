@@ -1,11 +1,6 @@
-#!/bin/bash -e
+#!/bin/sh -e
 
 cd /opt/PlexConnect
-
-COMMIT_URL=https://github.com/iBaa/PlexConnect/commit/$(git rev-parse HEAD)
-echo
-echo "PlexConnect build ${COMMIT_URL}"
-echo
 
 if [ ! -f /plexconnect/trailers.cer ]; then
   echo "Generating SSL certificate"
@@ -30,7 +25,4 @@ echo 'Using Settings.cfg:'
 grep . Settings.cfg
 echo
 
-touch PlexConnect.log
-
-./PlexConnect.py &
-tail -f PlexConnect.log
+./PlexConnect.py
