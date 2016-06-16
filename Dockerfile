@@ -14,7 +14,7 @@ RUN apk add \
 # Copy necessary scripts
 COPY start-plexconnect.sh /opt/start.sh
 
-# Download PlexConnect and apply the custom patch
+# Download PlexConnect
 RUN git clone https://github.com/iBaa/PlexConnect.git /opt/PlexConnect
 
 # Setup logging

@@ -11,18 +11,24 @@ if [ ! -f /plexconnect/trailers.cer ]; then
     && cat /plexconnect/trailers.key >> /plexconnect/trailers.pem
 fi
 
-if [ ! -f ATVSettings.cfg ]; then
-  ln -s /plexconnect/ATVSettings.cfg
+if [ ! -f /opt/PlexConnect/ATVSettings.cfg ]; then
+	ln -s /plexconnect/ATVSettings.cfg /opt/PlexConnect/ATVSettings.cfg
 fi
 
 cp /plexconnect/trailers.* assets/certificates/
 
-echo [PlexConnect] > Settings.cfg
-env | grep ^PLEXCONNECT_ | sed -E -e 's/^PLEXCONNECT_//' -e 's/(.*)=/\L\1 = /' >> Settings.cfg
+if [ ! -f /plexconnect/Settings.cfg ]; then
+	echo [PlexConnect] > /plexconnect/Settings.cfg
+	env | grep ^PLEXCONNECT_ | sed -E -e 's/^PLEXCONNECT_//' -e 's/(.*)=/\L\1 = /' >> /plexconnect/Settings.cfg
+else
+	rm -fr /opt/PlexConnect/Settings.cfg
+fi
+
+ln -s /plexconnect/Settings.cfg /opt/PlexConnect/Settings.cfg
 
 echo
 echo 'Using Settings.cfg:'
-grep . Settings.cfg
+grep . /opt/PlexConnect/Settings.cfg
 echo
 
 ./PlexConnect.py
